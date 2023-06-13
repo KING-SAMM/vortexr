@@ -6,14 +6,11 @@
 
     use app\core\Application;
 
-    $app = new Application();
+    $app = new Application(dirname(__DIR__) .DIRECTORY_SEPARATOR);
 
-    $app->router->get('/', function() {
-        return "<h1>Hello world</h1><br><p><a href='/customers'>See all customers</a></p>";
-    });
+    $app->router->get('/', 'home');
 
-    $app->router->get('/customers', function() {
-        return "<h1>All customers</h1>";
-    });
+    $app->router->get('/customers', 'customers');
+    $app->router->get('/contact', 'contact');
 
     $app->run();

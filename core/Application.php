@@ -15,17 +15,24 @@ namespace app\core;
 
  class Application 
  {
+    # Global variables
+    public static string $ROOT;
+    public static Application $app;
     public Router $router;
     public Request $request;
-    public function __construct() 
+    public Response $response;
+    public function __construct(string $root) 
     {
+        self::$ROOT = $root;
+        self::$app = $this;
         $this->request =  new Request();
+        $this->response =  new Response();
         $this->router =  new Router($this->request);
     }
 
     public function run() 
     {
         # Detaermines/resolves which router callback to execute
-        $this->router->resolve();
+        echo $this->router->resolve();
     }
  }

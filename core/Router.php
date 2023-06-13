@@ -17,7 +17,7 @@ namespace app\core;
     public function __construct(public \app\core\Request $request)
     {}
 
-    public function get(string $path, callable $callback)
+    public function get(string $path, callable|string $callback)
     {
         $this->routes['get'][$path] = $callback;
     }
@@ -30,11 +30,51 @@ namespace app\core;
         $path = $this->request->getPath();
         $method = $this->request->getMethod();
         $callback = $this->routes[$method][$path] ?? false;
+
+        # If $callback doen not exist
         if ($callback === false) 
         {
-            echo "Page not found";
-            exit;
+            # Set appropriate status code for not found routes
+            Application::$app->response->setStatusCode(404);
+            return "Page not found";
         }
-        echo call_user_func($callback);
+
+        # If $callback is a string and not expected 
+        # function/closure render the view
+        if(is_string($callback))
+        {
+            return $this->renderView($callback);
+        }
+        return call_user_func($callback);
+    }
+
+    public function renderView(string $view)
+    {
+        # Render views within the layout content
+        $layoutContent = $this->layoutContent();
+        $viewContent = $this->renderOnlyView($view);
+        return str_replace('{{content}}', $viewContent, $layoutContent);
+
+        // include_once Application::$ROOT . "views/$view.php";
+    }
+
+    protected function layoutContent()
+    {
+        # Turn on output buffering
+        ob_start(); 
+
+        include_once Application::$ROOT . "views/layouts/main.php";
+
+        # Get current buffer contents and delete current output buffer
+        return ob_get_clean(); 
+    }
+
+    protected function renderOnlyView($view)
+    {
+        ob_start(); 
+
+        include_once Application::$ROOT . "views/$view.php";
+
+        return ob_get_clean(); 
     }
  }

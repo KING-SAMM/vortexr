@@ -1,0 +1,17 @@
+{
+    "name": "kcsamm/vortexr",
+    "description": "A PHP MVC framework for building simple web applications\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[b",
+    "autoload": {
+        "psr-4": {
+            "app\\": "./",
+            "Kcsamm\\Vortexr\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "kcsamm",
+            "email": "kcsamm@studioeternal.net"
+        }
+    ],
+    "require": {}
+}
