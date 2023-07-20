@@ -4,13 +4,17 @@
     $dirname = __DIR__ . DIRECTORY_SEPARATOR;
     require_once $dirname . '../vendor/autoload.php';
 
+    use app\controllers\SiteController;
     use app\core\Application;
 
     $app = new Application(dirname(__DIR__) .DIRECTORY_SEPARATOR);
 
-    $app->router->get('/', 'home');
+    $app->router->get('/', [SiteController::class, "home"]);
 
+    $app->router->get('/profile', 'profile');
     $app->router->get('/customers', 'customers');
-    $app->router->get('/contact', 'contact');
+    $app->router->get('/gallery', 'gallery');
+    $app->router->get('/contact', [SiteController::class, "contact"]);
+    $app->router->post('/contact', [SiteController::class, "handleContact"]);
 
     $app->run();

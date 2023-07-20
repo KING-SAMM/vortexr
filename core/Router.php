@@ -14,12 +14,27 @@ namespace app\core;
  {
     protected array $routes = [];
 
-    public function __construct(public \app\core\Request $request)
+    /**
+     * Router constructor
+     * 
+     * @param \app\core\Request $request
+     * @param \app\core\Response $response
+     */
+    public function __construct
+    (
+        public Request $request,
+        public Response $response
+    )
     {}
 
-    public function get(string $path, callable|string $callback)
+    public function get(string $path, array|callable|string $callback)
     {
         $this->routes['get'][$path] = $callback;
+    }
+
+    public function post(string $path, array|callable|string $callback)
+    {
+        $this->routes['post'][$path] = $callback;
     }
 
     public function resolve()
@@ -35,8 +50,8 @@ namespace app\core;
         if ($callback === false) 
         {
             # Set appropriate status code for not found routes
-            Application::$app->response->setStatusCode(404);
-            return "Page not found";
+            $this->response->setStatusCode(404);
+            return $this->renderView("_404");
         }
 
         # If $callback is a string and not expected 
@@ -48,11 +63,20 @@ namespace app\core;
         return call_user_func($callback);
     }
 
-    public function renderView(string $view)
+    public function renderView(string $view, array $params = [])
     {
         # Render views within the layout content
         $layoutContent = $this->layoutContent();
-        $viewContent = $this->renderOnlyView($view);
+        $viewContent = $this->renderOnlyView($view, $params);
+        return str_replace('{{content}}', $viewContent, $layoutContent);
+
+        // include_once Application::$ROOT . "views/$view.php";
+    }
+
+    public function renderViewContent(string $viewContent)
+    {
+        # Render views within the layout content
+        $layoutContent = $this->layoutContent();
         return str_replace('{{content}}', $viewContent, $layoutContent);
 
         // include_once Application::$ROOT . "views/$view.php";
@@ -69,8 +93,13 @@ namespace app\core;
         return ob_get_clean(); 
     }
 
-    protected function renderOnlyView($view)
+    protected function renderOnlyView($view, $params)
     {
+        foreach($params as $key => $value)
+        {
+            $$key = $value;
+        }
+
         ob_start(); 
 
         include_once Application::$ROOT . "views/$view.php";
