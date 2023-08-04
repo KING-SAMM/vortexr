@@ -4,8 +4,8 @@
     $dirname = __DIR__ . DIRECTORY_SEPARATOR;
     require_once $dirname . '../vendor/autoload.php';
 
-    use app\controllers\SiteController;
-    use app\core\Application;
+    use App\Controllers\SiteController;
+    use App\Core\Application;
 
     $app = new Application(dirname(__DIR__) .DIRECTORY_SEPARATOR);
 
