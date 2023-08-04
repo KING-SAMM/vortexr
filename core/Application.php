@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace app\core;
+namespace App\Core;
 
 // use app\core\router;
 
@@ -10,7 +10,7 @@ namespace app\core;
  * class Application
  * 
  * @author KC Samm <kcsamm@studioeternal.net>
- * @package app\core
+ * @package App\Core
  */
 
  class Application 

@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace app\core;
+namespace App\Core;
 
 /**
  * class Router
  * 
  * @author KC Samm <kcsamm11@studioeternal.net>
- * @package app\core
+ * @package App\Core
  */
 
  class Router 
@@ -60,7 +60,18 @@ namespace app\core;
         {
             return $this->renderView($callback);
         }
-        return call_user_func($callback);
+
+        # We need an instance of the class (i.e $callback[0]) and then
+        # assign it back to the $callback in order to avoid
+        # the "Using $this when not in object context" error
+        # that shows up when we use '$this' keyword within
+        # SiteController class
+        if(is_array($callback))
+        {
+            $callback[0] = new $callback[0]();
+        }
+        
+        return call_user_func($callback, $this->request);
     }
 
     public function renderView(string $view, array $params = [])

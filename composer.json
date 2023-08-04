@@ -3,7 +3,7 @@
     "description": "A PHP MVC framework for building simple web applications\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[D\u001b[b",
     "autoload": {
         "psr-4": {
-            "app\\": "./",
+            "App\\": "./",
             "Kcsamm\\Vortexr\\": "src/"
         }
     },

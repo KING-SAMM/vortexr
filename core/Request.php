@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace app\core;
+namespace App\Core;
 
 /**
  * class Request
  * 
  * @author KC Samm <kcsamm11@studioeternal.net>
- * @package app\core
+ * @package App\Core
  */
 
  class Request 
@@ -32,5 +32,26 @@ namespace app\core;
     public function getMethod()
     {
         return strtolower($_SERVER['REQUEST_METHOD']);
+    }
+
+    public function getBody()
+    {
+        $body = [];
+
+        if ($this->getMethod() === 'get')
+        {
+            foreach($_GET as $key => $value)
+            {
+                $body[$key] = filter_input(INPUT_GET, $key, FILTER_SANITIZE_SPECIAL_CHARS);
+            }
+        }
+        if ($this->getMethod() === 'post')
+        {
+            foreach($_POST as $key => $value)
+            {
+                $body[$key] = filter_input(INPUT_POST, $key, FILTER_SANITIZE_SPECIAL_CHARS);
+            }
+        }
+        return $body;
     }
  }

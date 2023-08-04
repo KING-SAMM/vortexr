@@ -1,34 +1,40 @@
 <?php
 
-namespace app\controllers;
+namespace App\Controllers;
 
-use app\core\Application;
+use App\Core\Request;
+use App\Core\Controller;
+
 
 /**
  * class SiteController
  * 
  * @author KC Samm <kcsamm@studioeternal.net>
- * @package app\controllers
+ * @package App\Controllers
  */
 
-class SiteController 
+class SiteController extends Controller
 {
-    public static function home()
+    public function home()
     {
         # pass data to home view
         $params = [
             "name" => "KC Samm"
         ];
-        return Application::$app->router->renderView('home', $params);
+        return $this->render('home', $params);
     }
 
-    public static function contact()
+    public function contact()
     {
-        return Application::$app->router->renderView('contact');
+        return $this->render('contact');
     }
 
-    public static function handleContact()
+    public function handleContact(Request $request)
     {
+        $body = $request->getBody();
+        echo "<pre>";
+        var_dump($body);
+        echo "<pre>";
         return "Handling submitted data";
     }
 }
